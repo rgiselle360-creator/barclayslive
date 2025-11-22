@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barclays Banque</title>
+    <!-- TITRE MIS À JOUR POUR NETLIFY -->
+    <title>Barclays Banque - Espace Client</title>
     <!-- Inclure Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Configuration des polices et des classes personnalisées pour Tailwind -->
@@ -50,25 +51,26 @@
             transform: rotate(90deg);
         }
 
-        /* Animation de chargement pour le virement */
-        .spinner {
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top: 4px solid #fff;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         /* Fix pour les écrans mobiles pour que la nav n'obstrue pas le contenu */
         @media (max-width: 767px) {
             .main-content {
                 padding-bottom: 70px; /* Espace pour la barre de navigation inférieure */
             }
+        }
+        
+        /* Loading spinner for the transfer */
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
     <!-- Inclure React et ReactDOM -->
@@ -83,7 +85,6 @@
     <script type="text/babel">
         // ==========================================
         // SIMULATION DES ICONES LUCIDE-REACT
-        // Remplacer les imports par des composants SVG/fonctionnels
         // ==========================================
         const Bell = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18.8 12.3a4.5 4.5 0 0 0-4.5-4.5H9.7a4.5 4.5 0 0 0-4.5 4.5v1.2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.2zm-4.3 8a2 2 0 0 1-4 0"/></svg>;
         const LogOut = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
@@ -92,12 +93,13 @@
         const CreditCard = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>;
         const X = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
         const Landmark = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><path d="M4 14.897V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10.897M12 2l4 3.5M12 2l-4 3.5M9 8h6M6 18h12"/></svg>;
+        const CheckCircle = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
 
 
         // ==========================================
         // DONNÉES FICTIVES INITIALES
-        // SOLDE INITIAL MIS À JOUR À 243 500 €
         // ==========================================
+        
         const INITIAL_DATA = {
             bankName: "BARCLAYS",
             user: {
@@ -105,26 +107,59 @@
                 loginId: "7897620168",
                 password: "548521"
             },
-            // Solde initial fixé à 243 500 € comme demandé
+            // Solde initial
             initialBalance: 243500, 
             initialTransactions: [
-                { id: 1, date: '13/11/2025', recipient: 'Mathias Thibaut', account: '******2 2782', amount: 3000, type: 'credit', description: 'Remboursement' }, // CREDIT
-                { id: 2, date: '04/11/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1400, type: 'credit', description: 'Salaire' }, // CREDIT
-                { id: 3, date: '27/10/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1200, type: 'credit', description: 'Vente en ligne' }, // CREDIT
-                // Nouvelle transaction de crédit blockchain (en quatrième position)
-                { id: 4, date: '20/10/2025', recipient: 'blockchain', account: '********', amount: 243500, type: 'credit', description: 'Produits de placements' }, 
+                // Transfert de placements (mis à jour au 15/10/2025 avec le plus petit ID pour être en dernière position après tri)
+                { id: 1, date: '15/10/2025', recipient: 'Blockchain', account: '********', amount: 243500, type: 'credit', description: 'Transfert de placements' },
+                // Crédits (montants positifs) - IDs incrémentés pour simuler des transactions plus récentes
+                { id: 2, date: '27/10/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1200, type: 'credit', description: 'Transaction intérieure' },
+                { id: 3, date: '04/11/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1400, type: 'credit', description: 'Transaction intérieure' },
+                { id: 4, date: '13/11/2025', recipient: 'Mathias Thibaut', account: '******2 2782', amount: 3000, type: 'credit', description: 'Transaction intérieure' },
             ],
             notificationMessage: "243 500 euros ont été générés à la suite de placements effectués sur les marchés. En l’absence d’une infrastructure de gestion d’actifs numériques dédiée, les produits financiers ont été provisoirement centralisés auprès de la banque Barclays, avant d’être transférés sur votre compte."
         };
 
         const formatCurrency = (amount) => {
-            return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+            // Utiliser Math.abs pour s'assurer que l'affichage du montant est correct pour le formatteur
+            const displayAmount = Math.abs(amount);
+            return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(displayAmount);
+        };
+
+        // Fonction pour formater le numéro de carte
+        const formatCardNumber = (number) => {
+            // Simuler un numéro de carte
+            const visible = '8910';
+            const hidden = '•••• •••• •••• ';
+            return hidden + visible;
         };
 
         // ==========================================
         // SOUS-COMPOSANTS
         // ==========================================
+        
+        // Composant Notification de Succès
+        function SuccessToast({ message, onClose }) {
+            React.useEffect(() => {
+                const timer = setTimeout(() => {
+                    onClose();
+                }, 4000); // Disparaît après 4 secondes
+                return () => clearTimeout(timer);
+            }, [onClose]);
 
+            return (
+                <div className="fixed bottom-24 md:bottom-8 left-1/2 -translate-x-1/2 z-50 animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <div className="flex items-center gap-3 bg-green-600 text-white p-4 rounded-xl shadow-2xl shadow-green-600/30">
+                        <CheckCircle className="w-6 h-6" />
+                        <span className="font-medium">{message}</span>
+                        <button onClick={onClose} className="p-1 rounded-full hover:bg-white/10 ml-2">
+                            <X className="w-4 h-4" />
+                        </button>
+                    </div>
+                </div>
+            );
+        }
+        
         function LoginPage({ onLoginSuccess, correctLogin, bankName }) {
             const [loginId, setLoginId] = React.useState('');
             const [password, setPassword] = React.useState('');
@@ -260,7 +295,7 @@
             ];
 
             return (
-                <nav className="md:w-64 bg-white border-r border-slate-200 flex md:flex-col justify-around fixed bottom-0 w-full md:relative md:h-auto z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none p-2 md:p-4 gap-1 md:gap-2">
+                <nav className="md:w-64 bg-white border-r border-slate-200 flex md:flex-col justify-around md:justify-start fixed bottom-0 w-full md:relative md:h-auto z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] md:shadow-none p-2 md:p-4 gap-1 md:gap-2">
                     {navItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = currentView === item.id;
@@ -308,28 +343,35 @@
                             <span className="text-xs font-medium text-sky-600 bg-sky-50 px-2 py-1 rounded-full">Ce mois</span>
                         </div>
                         <ul className="divide-y divide-slate-100">
-                            {transactions.map(tx => (
-                                <li key={tx.id} className="px-6 py-4 hover:bg-slate-50 transition-colors flex items-center justify-between group">
-                                    <div className="flex items-start gap-4">
-                                        {/* Inverser les couleurs et l'icône : rouge pour débit (<0), vert pour crédit (>=0) */}
-                                        <div className={`p-2 rounded-full ${tx.amount < 0 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
-                                            {tx.amount < 0 ? <ArrowRightLeft className="w-5 h-5" /> : <ArrowRightLeft className="w-5 h-5 rotate-180" />}
+                            {/* Assurez-vous que l'historique est trié du plus récent (ID le plus élevé) au plus ancien */}
+                            {transactions.sort((a, b) => b.id - a.id).map(tx => {
+                                // Déterminer si c'est un débit (montant négatif) ou un crédit (montant positif)
+                                const isDebit = tx.amount < 0;
+                                
+                                return (
+                                    <li key={tx.id} className="px-6 py-4 hover:bg-slate-50 transition-colors flex items-center justify-between group">
+                                        <div className="flex items-start gap-4">
+                                            <div className={`p-2 rounded-full ${isDebit ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
+                                                {/* Inverser l'icône : flèche sortante pour débit, flèche entrante pour crédit */}
+                                                <ArrowRightLeft className={`w-5 h-5 ${isDebit ? '' : 'rotate-180'}`} />
+                                            </div>
+                                            <div>
+                                                <p className="font-medium text-slate-900">{tx.recipient}</p>
+                                                <p className="text-sm text-slate-500 font-mono">{tx.account}</p>
+                                                {/* Afficher la description pour les transactions intérieures */}
+                                                {tx.description && <p className="text-xs text-slate-400 mt-0.5 italic">{tx.description}</p>} 
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="font-medium text-slate-900">{tx.recipient}</p>
-                                            <p className="text-sm text-slate-500 font-mono">{tx.account}</p>
-                                            {tx.description && <p className="text-xs text-slate-400 mt-0.5 italic">{tx.description}</p>}
+                                        <div className="text-right">
+                                            {/* Afficher le signe - ou + et la couleur appropriée */}
+                                            <p className={`font-bold ${isDebit ? 'text-red-600' : 'text-green-600'}`}>
+                                                {isDebit ? '-' : '+'} {formatCurrency(tx.amount)}
+                                            </p>
+                                            <p className="text-xs text-slate-400">{tx.date}</p>
                                         </div>
-                                    </div>
-                                    <div className="text-right">
-                                        <p className={`font-bold ${tx.amount < 0 ? 'text-red-600' : 'text-green-600'}`}>
-                                            {/* Afficher les montants positifs sans signe, négatifs avec signe */}
-                                            {formatCurrency(tx.amount)}
-                                        </p>
-                                        <p className="text-xs text-slate-400">{tx.date}</p>
-                                    </div>
-                                </li>
-                            ))}
+                                    </li>
+                                );
+                            })}
                         </ul>
                         {transactions.length === 0 && (
                             <div className="text-center p-8 text-slate-500 italic">
@@ -341,7 +383,7 @@
             );
         }
 
-        function TransferView({ onTransfer, isTransferring }) {
+        function TransferView({ onTransfer }) {
             const [formData, setFormData] = React.useState({
                 name: '',
                 iban: '',
@@ -349,67 +391,46 @@
                 description: ''
             });
             const [message, setMessage] = React.useState(null);
-            
-            // État pour afficher le message de succès temporaire
-            const [successMessage, setSuccessMessage] = React.useState(null);
-
-
-            // Effet pour masquer le message de succès après 3 secondes
-            React.useEffect(() => {
-                if (successMessage) {
-                    const timer = setTimeout(() => {
-                        setSuccessMessage(null);
-                    }, 3000); // 3 secondes
-                    return () => clearTimeout(timer);
-                }
-            }, [successMessage]);
+            // État pour gérer le chargement 
+            const [isLoading, setIsLoading] = React.useState(false); 
 
             const handleChange = (e) => {
-                // S'assurer que le montant est toujours positif pour le formulaire
-                const value = e.target.name === 'amount' && parseFloat(e.target.value) < 0 
-                              ? Math.abs(parseFloat(e.target.value)) 
+                const value = e.target.name === 'amount' 
+                              ? Math.abs(parseFloat(e.target.value) || 0) // S'assurer que le montant dans le champ est toujours positif
                               : e.target.value;
                 setFormData({ ...formData, [e.target.name]: value });
-                setMessage(null); // Clear message on change
-                setSuccessMessage(null); // Clear success message on change
+                setMessage(null); 
             };
 
             const handleSubmit = async (e) => {
                 e.preventDefault();
                 const amountNum = parseFloat(formData.amount);
-                
-                if (isTransferring) return; // Empêcher les soumissions multiples
 
+                if(isLoading) return; // Empêcher les soumissions multiples
+                
                 if(!formData.name || !formData.iban || !formData.amount || amountNum <= 0) {
                     setMessage({ type: 'error', text: "Veuillez remplir correctement tous les champs obligatoires (le montant doit être supérieur à zéro)." });
                     return;
                 }
-                
-                // Le composant parent (App) gère l'état de chargement et la logique de transfert.
-                // Ici, nous appelons onTransfer et gérons le feedback.
-                
-                const result = await onTransfer({ ...formData, amount: amountNum }); // Passer le montant numérique
 
+                setIsLoading(true);
+                setMessage({ type: 'info', text: "Virement en cours de traitement..." }); // Message de chargement
+
+                // Simuler le délai de 3 secondes
+                await new Promise(resolve => setTimeout(resolve, 3000));
+
+                // Appel de la fonction de virement
+                const result = onTransfer({ ...formData, amount: amountNum }); 
+                
+                setIsLoading(false); // Arrêter le chargement
+                
                 if(result.success) {
                     setFormData({ name: '', iban: '', amount: '', description: '' });
-                    // Déclencher le message de succès qui se masquera après 3s
-                    setSuccessMessage(result.message); 
+                    // Le message de succès est géré par le Toast dans le composant principal
                 } else {
                     setMessage({ type: 'error', text: result.message });
                 }
             };
-            
-            // Déterminer le message à afficher (erreur > succès > aucun)
-            const currentMessage = message ? (
-                <div className="p-4 rounded-lg text-sm bg-red-50 text-red-600 border border-red-200">
-                    {message.text}
-                </div>
-            ) : successMessage ? (
-                <div className="p-4 rounded-lg text-sm bg-green-50 text-green-600 border border-green-200 animate-in fade-in zoom-in-95">
-                    ✅ Succès ! {successMessage}
-                </div>
-            ) : null;
-
 
             return (
                 <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 md:p-8 animate-in fade-in slide-in-from-bottom-4 duration-300">
@@ -420,9 +441,10 @@
                         <p className="text-slate-500 text-sm">Remplissez les informations du bénéficiaire ci-dessous.</p>
                     </div>
 
-                    {currentMessage && (
-                        <div className="mb-6">
-                            {currentMessage}
+                    {/* Affichage des messages d'erreur/info (le succès est géré par Toast) */}
+                    {message && message.type !== 'success' && (
+                        <div className={`mb-6 p-4 rounded-lg text-sm ${message.type === 'error' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-blue-50 text-blue-600 border border-blue-200'}`}>
+                            {message.text}
                         </div>
                     )}
 
@@ -437,7 +459,7 @@
                                     onChange={handleChange} 
                                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
                                     required 
-                                    disabled={isTransferring}
+                                    disabled={isLoading}
                                 />
                             </div>
                             <div className="space-y-2">
@@ -450,7 +472,7 @@
                                     placeholder="FR76...." 
                                     className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
                                     required 
-                                    disabled={isTransferring}
+                                    disabled={isLoading}
                                 />
                             </div>
                         </div>
@@ -467,7 +489,7 @@
                                     step="0.01" 
                                     className="w-full pl-4 pr-12 py-3 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all text-lg font-medium text-slate-900"
                                     required 
-                                    disabled={isTransferring}
+                                    disabled={isLoading}
                                 />
                                 <span className="absolute right-4 top-3.5 text-slate-400 font-bold">EUR</span>
                             </div>
@@ -481,20 +503,21 @@
                                 value={formData.description} 
                                 onChange={handleChange} 
                                 className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
-                                disabled={isTransferring}
+                                disabled={isLoading}
                             />
                         </div>
 
                         <div className="pt-4">
                             <button 
                                 type="submit" 
-                                className="w-full md:w-auto bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-sky-500/20 transition-all transform active:scale-[0.98] disabled:bg-sky-400 disabled:shadow-none flex items-center justify-center gap-2"
-                                disabled={isTransferring}
+                                // Le bouton est désactivé si isLoading est true
+                                className="w-full md:w-auto bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-sky-500/20 transition-all transform active:scale-[0.98] disabled:bg-sky-400 disabled:shadow-none flex items-center justify-center gap-3"
+                                disabled={isLoading}
                             >
-                                {isTransferring ? (
+                                {isLoading ? (
                                     <>
                                         <div className="spinner"></div>
-                                        <span>Traitement en cours...</span>
+                                        <span>Traitement...</span>
                                     </>
                                 ) : (
                                     <span>Valider le virement</span>
@@ -507,9 +530,9 @@
         }
 
         function CardView({ userName }) {
-            // Logique de cryptage du numéro de carte pour l'affichage
-            const encryptedCardNumber = "4970 10** **** 8910";
-            
+            const cardNumber = "4970102345678910";
+            const encryptedCardNumber = formatCardNumber(cardNumber);
+
             return (
                 <div className="animate-in fade-in zoom-in-95 duration-300">
                     <h2 className="text-xl font-bold text-slate-800 mb-6">Votre Carte Bancaire</h2>
@@ -542,8 +565,9 @@
                                 </div>
 
                                 <div className="mt-4">
+                                    {/* Utilisation du numéro crypté */}
                                     <div className="text-xl md:text-2xl font-mono tracking-widest drop-shadow-md">
-                                        {encryptedCardNumber} {/* Numéro de carte crypté */}
+                                        {encryptedCardNumber}
                                     </div>
                                 </div>
 
@@ -601,19 +625,15 @@
         function App() {
             const [isLoggedIn, setIsLoggedIn] = React.useState(false);
             
-            // État pour gérer le chargement du virement (3 secondes)
-            const [isTransferring, setIsTransferring] = React.useState(false);
-
-            // Initialisation de l'état avec localStorage pour la persistance
+            // --- LOGIQUE DE PERSISTANCE (S'EXÉCUTE AU MONTAGE DU COMPOSANT) ---
+            // Le fait de laisser ces appels dans l'initialisation de useState assure
+            // que les données mises à jour sont rechargées à chaque fois que le composant App
+            // est remonté (c'est-à-dire après une déconnexion/reconnexion réussie).
+            
             const [balance, setBalance] = React.useState(() => {
-                // NOTE: localStorage est disponible dans un contexte de navigateur
                 if (typeof window !== 'undefined') {
                     const savedBalance = localStorage.getItem('barclays_balance');
-                    // Lors de l'initialisation, on vérifie si les transactions initiales sont stockées
-                    if (localStorage.getItem('barclays_transactions') === null) {
-                         // Si les transactions n'existent pas, utiliser le solde initial de l'objet INITIAL_DATA
-                        return INITIAL_DATA.initialBalance;
-                    }
+                    // S'assurer que le montant est un nombre avant de le retourner
                     return savedBalance ? parseFloat(savedBalance) : INITIAL_DATA.initialBalance;
                 }
                 return INITIAL_DATA.initialBalance;
@@ -622,10 +642,10 @@
             const [transactions, setTransactions] = React.useState(() => {
                 if (typeof window !== 'undefined') {
                     const savedTransactions = localStorage.getItem('barclays_transactions');
-                    // Gérer l'erreur si JSON.parse échoue et retourner les données initiales
                     try {
                         const parsed = JSON.parse(savedTransactions);
-                        return savedTransactions ? parsed : INITIAL_DATA.initialTransactions;
+                        // S'assurer que c'est un tableau, sinon retourner les données initiales
+                        return Array.isArray(parsed) ? parsed : INITIAL_DATA.initialTransactions;
                     } catch (e) {
                         console.error("Erreur de parsing des transactions de localStorage:", e);
                         return INITIAL_DATA.initialTransactions;
@@ -636,6 +656,8 @@
 
             const [currentView, setCurrentView] = React.useState('dashboard');
             const [showNotification, setShowNotification] = React.useState(false);
+            // État pour la notification de succès du virement
+            const [showSuccessToast, setShowSuccessToast] = React.useState(false);
 
             // Sauvegarde automatique dans localStorage à chaque modification
             React.useEffect(() => {
@@ -645,108 +667,114 @@
                 }
             }, [balance, transactions]);
 
+            // Quand la connexion réussit, on passe à l'état "connecté"
             const handleLoginSuccess = () => {
                 setIsLoggedIn(true);
                 setCurrentView('dashboard');
+                // Le fait de changer l'état ici force un re-render, mais
+                // comme le composant App n'est pas démonté/remonté,
+                // on ne recharge les données que si l'on se déconnecte complètement.
             };
 
+            // Quand on se déconnecte, on repasse à la page de connexion
             const handleLogout = () => {
                 setIsLoggedIn(false);
-                // Les données restent conservées pour la prochaine connexion.
+                // Important: On ne touche pas à localStorage ici,
+                // on laisse les données du dernier virement enregistrées.
                 setShowNotification(false);
+                setShowSuccessToast(false);
                 setCurrentView('dashboard');
             };
 
-            const handleTransfer = async (transferData) => {
+            // Logique de virement
+            const handleTransfer = (transferData) => {
                 const amountNum = parseFloat(transferData.amount);
                 
                 if (amountNum > balance) {
                     return { success: false, message: "Solde insuffisant pour effectuer ce virement." };
                 }
-                
-                setIsTransferring(true);
 
-                // Fonction utilitaire pour simuler un délai
-                const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-                // 1. Délai de 3 secondes pour simuler le traitement
-                await delay(3000); 
-                
-                // 2. Mise à jour des états après le délai
-                // Le virement sortant doit être un DEBIT (négatif)
+                // Le virement est un DEBIT, donc le montant de la transaction doit être négatif.
                 const newTransaction = {
-                    id: Date.now(),
+                    id: Date.now(), // Utiliser un timestamp pour un ID unique et un tri facile
                     date: new Date().toLocaleDateString('fr-FR'),
                     recipient: transferData.name,
                     account: `******${transferData.iban.slice(-4)}`,
-                    amount: -amountNum, // MONTANT NÉGATIF pour un virement sortant
+                    amount: -amountNum, 
                     type: 'debit',
                     description: transferData.description
                 };
 
+                // Mettre à jour la balance et les transactions
                 setBalance(prevBalance => prevBalance - amountNum);
-                // Ajouter la nouvelle transaction au début
-                setTransactions(prevTx => [newTransaction, ...prevTx]);
+                setTransactions(prevTx => [newTransaction, ...prevTx]); // Ajouter la nouvelle transaction
 
-                // 3. Réinitialiser l'état de chargement
-                setIsTransferring(false);
-                
-                // 4. Retourner le message de succès (sera affiché par TransferView)
+                // Afficher le toast de succès
+                setShowSuccessToast(true); 
+
                 return { 
                     success: true, 
-                    message: `Le virement de ${formatCurrency(amountNum)} à ${transferData.name} a été effectué.` 
+                    message: `Virement de ${formatCurrency(amountNum)} à ${transferData.name} effectué avec succès.` 
                 };
             };
 
+            // Si l'utilisateur n'est pas connecté, on affiche la page de Login
+            if (!isLoggedIn) {
+                return (
+                    <LoginPage 
+                        onLoginSuccess={handleLoginSuccess} 
+                        correctLogin={INITIAL_DATA.user} 
+                        bankName={INITIAL_DATA.bankName} 
+                    />
+                );
+            }
+
+            // Si l'utilisateur est connecté, on affiche le tableau de bord
             return (
-                <div className="app-container min-h-screen bg-slate-50 font-sans text-slate-700">
+                <div className="dashboard-container flex flex-col h-screen min-h-screen bg-slate-50 font-sans text-slate-700">
+                    <Header 
+                        userName={INITIAL_DATA.user.name} 
+                        bankName={INITIAL_DATA.bankName}
+                        onLogout={handleLogout}
+                        onToggleNotification={() => setShowNotification(!showNotification)}
+                        notificationActive={showNotification}
+                    />
                     
-                    {!isLoggedIn ? (
-                        <LoginPage 
-                            onLoginSuccess={handleLoginSuccess} 
-                            correctLogin={INITIAL_DATA.user} 
-                            bankName={INITIAL_DATA.bankName} 
-                        />
-                    ) : (
-                        <div className="dashboard-container flex flex-col h-screen">
-                            <Header 
-                                userName={INITIAL_DATA.user.name} 
-                                bankName={INITIAL_DATA.bankName}
-                                onLogout={handleLogout}
-                                onToggleNotification={() => setShowNotification(!showNotification)}
-                                notificationActive={showNotification}
-                            />
-                            
-                            {showNotification && (
-                                <NotificationPanel message={INITIAL_DATA.notificationMessage} onClose={() => setShowNotification(false)} />
-                            )}
-
-                            <div className="flex flex-1 overflow-hidden relative">
-                                {/* Sidebar Navigation for Desktop / Bottom for Mobile */}
-                                <Navigation currentView={currentView} setCurrentView={setCurrentView} />
-
-                                <main className="main-content flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50">
-                                    <div className="max-w-4xl mx-auto">
-                                        {currentView === 'dashboard' && (
-                                            <DashboardView balance={balance} transactions={transactions} />
-                                        )}
-                                        {currentView === 'transfer' && (
-                                            <TransferView onTransfer={handleTransfer} isTransferring={isTransferring} />
-                                        )}
-                                        {currentView === 'card' && (
-                                            <CardView userName={INITIAL_DATA.user.name} />
-                                        )}
-                                    </div>
-                                </main>
-                            </div>
-                        </div>
+                    {showNotification && (
+                        <NotificationPanel message={INITIAL_DATA.notificationMessage} onClose={() => setShowNotification(false)} />
                     )}
+                    
+                    {/* Affichage du Toast de succès */}
+                    {showSuccessToast && (
+                        <SuccessToast 
+                            message="Virement effectué avec succès !" 
+                            onClose={() => setShowSuccessToast(false)} 
+                        />
+                    )}
+
+                    <div className="flex flex-1 overflow-hidden relative">
+                        {/* Sidebar Navigation for Desktop / Bottom for Mobile */}
+                        <Navigation currentView={currentView} setCurrentView={setCurrentView} />
+
+                        <main className="main-content flex-1 overflow-y-auto p-4 md:p-8 bg-slate-50">
+                            <div className="max-w-4xl mx-auto">
+                                {currentView === 'dashboard' && (
+                                    <DashboardView balance={balance} transactions={transactions} />
+                                )}
+                                {currentView === 'transfer' && (
+                                    <TransferView onTransfer={handleTransfer} />
+                                )}
+                                {currentView === 'card' && (
+                                    <CardView userName={INITIAL_DATA.user.name} />
+                                )}
+                            </div>
+                        </main>
+                    </div>
                 </div>
             );
         }
 
         // Rendu de l'application dans l'élément root
-        // Utiliser la nouvelle API de React 18
         const container = document.getElementById('root');
         const root = ReactDOM.createRoot(container);
         root.render(<App />);
