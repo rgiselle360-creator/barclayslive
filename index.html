@@ -94,6 +94,8 @@
         const X = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
         const Landmark = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><path d="M4 14.897V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10.897M12 2l4 3.5M12 2l-4 3.5M9 8h6M6 18h12"/></svg>;
         const CheckCircle = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>;
+        const Settings = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 0 2.73l-.15.1a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1 0-2.73l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
+        const TrendingUp = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
 
 
         // ==========================================
@@ -110,8 +112,8 @@
             // Solde initial
             initialBalance: 243500, 
             initialTransactions: [
-                // Transfert de placements (mis à jour au 15/10/2025 avec le plus petit ID pour être en dernière position après tri)
-                { id: 1, date: '15/10/2025', recipient: 'Blockchain', account: '********', amount: 243500, type: 'credit', description: 'Transfert de placements' },
+                // Transfert de placements (Crédit, ID le plus bas pour être en dernière position)
+                { id: 1, date: '15/10/2025', recipient: 'Blockchain', account: '********', amount: 243500, type: 'credit', description: 'Transfert de placements (Ancien)' },
                 // Crédits (montants positifs) - IDs incrémentés pour simuler des transactions plus récentes
                 { id: 2, date: '27/10/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1200, type: 'credit', description: 'Transaction intérieure' },
                 { id: 3, date: '04/11/2025', recipient: 'Wilfried Ebo', account: '******5 2543', amount: 1400, type: 'credit', description: 'Transaction intérieure' },
@@ -126,10 +128,10 @@
             return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(displayAmount);
         };
 
-        // Fonction pour formater le numéro de carte
+        // Fonction pour formater/crypter le numéro de carte
         const formatCardNumber = (number) => {
-            // Simuler un numéro de carte
-            const visible = '8910';
+            // Simuler un numéro de carte crypté
+            const visible = number.slice(-4);
             const hidden = '•••• •••• •••• ';
             return hidden + visible;
         };
@@ -161,6 +163,7 @@
         }
         
         function LoginPage({ onLoginSuccess, correctLogin, bankName }) {
+            // ... (code de LoginPage inchangé)
             const [loginId, setLoginId] = React.useState('');
             const [password, setPassword] = React.useState('');
             const [error, setError] = React.useState('');
@@ -231,6 +234,7 @@
         }
 
         function Header({ userName, bankName, onLogout, onToggleNotification, notificationActive }) {
+            // ... (code de Header inchangé)
             return (
                 <header className="bg-white border-b border-slate-200 sticky top-0 z-20 px-4 py-3 md:px-6 flex justify-between items-center shadow-sm">
                     <div className="flex items-center gap-2">
@@ -268,6 +272,7 @@
         }
 
         function NotificationPanel({ message, onClose }) {
+            // ... (code de NotificationPanel inchangé)
             return (
                 <div className="absolute top-16 right-4 md:right-6 z-30 w-full max-w-sm animate-in fade-in slide-in-from-top-4 duration-300">
                     <div className="bg-white rounded-xl shadow-xl border border-sky-100 overflow-hidden">
@@ -292,6 +297,8 @@
                 { id: 'dashboard', label: 'Tableau de bord', icon: Home },
                 { id: 'transfer', label: 'Virement', icon: ArrowRightLeft },
                 { id: 'card', label: 'Carte', icon: CreditCard },
+                { id: 'loan', label: 'Prêt', icon: TrendingUp }, // Nouveau bouton Prêt
+                { id: 'settings', label: 'Réglage', icon: Settings }, // Nouveau bouton Réglage
             ];
 
             return (
@@ -318,6 +325,7 @@
         }
 
         function DashboardView({ balance, transactions }) {
+            // ... (code de DashboardView inchangé)
             return (
                 <div className="space-y-6 animate-in fade-in zoom-in-95 duration-300">
                     {/* Balance Card */}
@@ -346,14 +354,18 @@
                             {/* Assurez-vous que l'historique est trié du plus récent (ID le plus élevé) au plus ancien */}
                             {transactions.sort((a, b) => b.id - a.id).map(tx => {
                                 // Déterminer si c'est un débit (montant négatif) ou un crédit (montant positif)
-                                const isDebit = tx.amount < 0;
+                                // Note : Avec les nouvelles données, toutes les transactions initiales sont des crédits.
+                                // Seuls les nouveaux virements seront des débits.
+                                const isCredit = tx.amount >= 0 && tx.type === 'credit';
+                                const isDebit = tx.amount < 0 && tx.type === 'debit';
                                 
                                 return (
                                     <li key={tx.id} className="px-6 py-4 hover:bg-slate-50 transition-colors flex items-center justify-between group">
                                         <div className="flex items-start gap-4">
-                                            <div className={`p-2 rounded-full ${isDebit ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'}`}>
-                                                {/* Inverser l'icône : flèche sortante pour débit, flèche entrante pour crédit */}
-                                                <ArrowRightLeft className={`w-5 h-5 ${isDebit ? '' : 'rotate-180'}`} />
+                                            {/* Crédit : Vert / Débit : Rouge */}
+                                            <div className={`p-2 rounded-full ${isCredit ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}`}>
+                                                {/* Flèche entrante pour crédit, flèche sortante pour débit */}
+                                                <ArrowRightLeft className={`w-5 h-5 ${isCredit ? 'rotate-180' : ''}`} />
                                             </div>
                                             <div>
                                                 <p className="font-medium text-slate-900">{tx.recipient}</p>
@@ -364,8 +376,8 @@
                                         </div>
                                         <div className="text-right">
                                             {/* Afficher le signe - ou + et la couleur appropriée */}
-                                            <p className={`font-bold ${isDebit ? 'text-red-600' : 'text-green-600'}`}>
-                                                {isDebit ? '-' : '+'} {formatCurrency(tx.amount)}
+                                            <p className={`font-bold ${isCredit ? 'text-green-600' : 'text-red-600'}`}>
+                                                {isCredit ? '+' : '-'} {formatCurrency(tx.amount)}
                                             </p>
                                             <p className="text-xs text-slate-400">{tx.date}</p>
                                         </div>
@@ -414,7 +426,7 @@
                 }
 
                 setIsLoading(true);
-                setMessage({ type: 'info', text: "Virement en cours de traitement..." }); // Message de chargement
+                // Pas de message d'information visible, juste le spinner sur le bouton
 
                 // Simuler le délai de 3 secondes
                 await new Promise(resolve => setTimeout(resolve, 3000));
@@ -441,9 +453,9 @@
                         <p className="text-slate-500 text-sm">Remplissez les informations du bénéficiaire ci-dessous.</p>
                     </div>
 
-                    {/* Affichage des messages d'erreur/info (le succès est géré par Toast) */}
-                    {message && message.type !== 'success' && (
-                        <div className={`mb-6 p-4 rounded-lg text-sm ${message.type === 'error' ? 'bg-red-50 text-red-600 border border-red-200' : 'bg-blue-50 text-blue-600 border border-blue-200'}`}>
+                    {/* Affichage des messages d'erreur */}
+                    {message && message.type === 'error' && (
+                        <div className={`mb-6 p-4 rounded-lg text-sm bg-red-50 text-red-600 border border-red-200`}>
                             {message.text}
                         </div>
                     )}
@@ -531,7 +543,7 @@
 
         function CardView({ userName }) {
             const cardNumber = "4970102345678910";
-            const encryptedCardNumber = formatCardNumber(cardNumber);
+            const encryptedCardNumber = formatCardNumber(cardNumber); // Utilisation de la fonction de formatage/cryptage
 
             return (
                 <div className="animate-in fade-in zoom-in-95 duration-300">
@@ -565,7 +577,7 @@
                                 </div>
 
                                 <div className="mt-4">
-                                    {/* Utilisation du numéro crypté */}
+                                    {/* Numéro de carte crypté */}
                                     <div className="text-xl md:text-2xl font-mono tracking-widest drop-shadow-md">
                                         {encryptedCardNumber}
                                     </div>
@@ -619,21 +631,89 @@
             );
         }
 
+        // Nouvelle vue pour le service de Prêt
+        function LoanView() {
+            return (
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 md:p-8 animate-in fade-in zoom-in-95 duration-300">
+                    <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <TrendingUp className="text-sky-500" /> Nos Services de Prêt
+                    </h2>
+                    <p className="text-slate-500 mb-6">Financez vos projets avec nos solutions de financement flexibles et avantageuses.</p>
+                    
+                    <div className="space-y-4">
+                        <div className="p-4 bg-sky-50 rounded-lg border border-sky-100">
+                            <h3 className="font-semibold text-sky-800">Prêt Immobilier</h3>
+                            <p className="text-sm text-sky-700">Taux compétitifs pour l'achat de votre résidence principale ou secondaire.</p>
+                        </div>
+                        <div className="p-4 bg-sky-50 rounded-lg border border-sky-100">
+                            <h3 className="font-semibold text-sky-800">Prêt Auto/Moto</h3>
+                            <p className="text-sm text-sky-700">Obtenez un financement rapide pour votre nouveau véhicule.</p>
+                        </div>
+                        <div className="p-4 bg-sky-50 rounded-lg border border-sky-100">
+                            <h3 className="font-semibold text-sky-800">Prêt Personnel</h3>
+                            <p className="text-sm text-sky-700">Libre utilisation, pour tous vos besoins de trésorerie.</p>
+                        </div>
+                    </div>
+                    
+                    <button className="mt-8 w-full bg-sky-500 hover:bg-sky-600 text-white font-semibold py-3 px-4 rounded-lg shadow-lg shadow-sky-500/30 transition-all">
+                        Faire une simulation de prêt
+                    </button>
+                </div>
+            );
+        }
+
+        // Nouvelle vue pour le service de Réglage
+        function SettingsView() {
+            return (
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 md:p-8 animate-in fade-in zoom-in-95 duration-300">
+                    <h2 className="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        <Settings className="text-sky-500" /> Réglages et Préférences
+                    </h2>
+                    <p className="text-slate-500 mb-6">Gérez votre compte, vos notifications et vos paramètres de sécurité.</p>
+                    
+                    <div className="space-y-6">
+                        <div className="border border-slate-100 rounded-lg p-4">
+                            <h3 className="font-semibold text-slate-800 mb-2">Sécurité</h3>
+                            <ul className="text-sm space-y-2">
+                                <li className="flex justify-between items-center py-1">
+                                    <span className="text-slate-700">Changer le mot de passe</span>
+                                    <span className="text-sky-500 cursor-pointer hover:text-sky-700">Gérer</span>
+                                </li>
+                                <li className="flex justify-between items-center py-1">
+                                    <span className="text-slate-700">Authentification à deux facteurs</span>
+                                    <span className="text-green-500">Activée</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="border border-slate-100 rounded-lg p-4">
+                            <h3 className="font-semibold text-slate-800 mb-2">Notifications</h3>
+                            <ul className="text-sm space-y-2">
+                                <li className="flex justify-between items-center py-1">
+                                    <span className="text-slate-700">Alertes par e-mail</span>
+                                    <span className="text-red-500">Désactivées</span>
+                                </li>
+                                <li className="flex justify-between items-center py-1">
+                                    <span className="text-slate-700">Notifications Push</span>
+                                    <span className="text-green-500">Activées</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
         // ==========================================
         // COMPOSANT PRINCIPAL APP
         // ==========================================
         function App() {
             const [isLoggedIn, setIsLoggedIn] = React.useState(false);
             
-            // --- LOGIQUE DE PERSISTANCE (S'EXÉCUTE AU MONTAGE DU COMPOSANT) ---
-            // Le fait de laisser ces appels dans l'initialisation de useState assure
-            // que les données mises à jour sont rechargées à chaque fois que le composant App
-            // est remonté (c'est-à-dire après une déconnexion/reconnexion réussie).
-            
+            // --- LOGIQUE DE PERSISTANCE ---
             const [balance, setBalance] = React.useState(() => {
                 if (typeof window !== 'undefined') {
                     const savedBalance = localStorage.getItem('barclays_balance');
-                    // S'assurer que le montant est un nombre avant de le retourner
+                    // G-A-R-D-E-R L-E S-O-L-D-E I-N-T-A-C-T comme demandé
                     return savedBalance ? parseFloat(savedBalance) : INITIAL_DATA.initialBalance;
                 }
                 return INITIAL_DATA.initialBalance;
@@ -671,16 +751,11 @@
             const handleLoginSuccess = () => {
                 setIsLoggedIn(true);
                 setCurrentView('dashboard');
-                // Le fait de changer l'état ici force un re-render, mais
-                // comme le composant App n'est pas démonté/remonté,
-                // on ne recharge les données que si l'on se déconnecte complètement.
             };
 
             // Quand on se déconnecte, on repasse à la page de connexion
             const handleLogout = () => {
                 setIsLoggedIn(false);
-                // Important: On ne touche pas à localStorage ici,
-                // on laisse les données du dernier virement enregistrées.
                 setShowNotification(false);
                 setShowSuccessToast(false);
                 setCurrentView('dashboard');
@@ -690,19 +765,21 @@
             const handleTransfer = (transferData) => {
                 const amountNum = parseFloat(transferData.amount);
                 
-                if (amountNum > balance) {
+                // Si le solde est insuffisant pour un virement (débit)
+                if (balance - amountNum < 0) {
                     return { success: false, message: "Solde insuffisant pour effectuer ce virement." };
                 }
 
                 // Le virement est un DEBIT, donc le montant de la transaction doit être négatif.
                 const newTransaction = {
-                    id: Date.now(), // Utiliser un timestamp pour un ID unique et un tri facile
+                    // ID très élevé pour être la transaction la plus récente
+                    id: Date.now(), 
                     date: new Date().toLocaleDateString('fr-FR'),
                     recipient: transferData.name,
                     account: `******${transferData.iban.slice(-4)}`,
                     amount: -amountNum, 
-                    type: 'debit',
-                    description: transferData.description
+                    type: 'debit', // Un virement standard est un débit
+                    description: transferData.description || 'Virement sortant'
                 };
 
                 // Mettre à jour la balance et les transactions
@@ -744,7 +821,7 @@
                         <NotificationPanel message={INITIAL_DATA.notificationMessage} onClose={() => setShowNotification(false)} />
                     )}
                     
-                    {/* Affichage du Toast de succès */}
+                    {/* Affichage du Toast de succès - S'affiche après 3s de chargement */}
                     {showSuccessToast && (
                         <SuccessToast 
                             message="Virement effectué avec succès !" 
@@ -766,6 +843,12 @@
                                 )}
                                 {currentView === 'card' && (
                                     <CardView userName={INITIAL_DATA.user.name} />
+                                )}
+                                {currentView === 'loan' && (
+                                    <LoanView />
+                                )}
+                                {currentView === 'settings' && (
+                                    <SettingsView />
                                 )}
                             </div>
                         </main>
