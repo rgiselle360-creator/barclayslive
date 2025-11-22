@@ -56,6 +56,13 @@
                 padding-bottom: 70px; /* Espace pour la barre de navigation inférieure */
             }
         }
+
+        /* Animation spécifique pour la notification de succès */
+        /* La transition s'applique après l'affichage initial */
+        .notification-fade-out {
+            opacity: 0;
+            transition: opacity 1s ease-out; /* La transition dure 1s */
+        }
     </style>
     <!-- Inclure React et ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
@@ -69,7 +76,6 @@
     <script type="text/babel">
         // ==========================================
         // SIMULATION DES ICONES LUCIDE-REACT
-        // Remplacer les imports par des composants SVG/fonctionnels
         // ==========================================
         const Bell = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18.8 12.3a4.5 4.5 0 0 0-4.5-4.5H9.7a4.5 4.5 0 0 0-4.5 4.5v1.2a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1.2zm-4.3 8a2 2 0 0 1-4 0"/></svg>;
         const LogOut = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>;
@@ -78,6 +84,11 @@
         const CreditCard = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>;
         const X = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>;
         const Landmark = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="22" x2="21" y2="22"/><path d="M4 14.897V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10.897M12 2l4 3.5M12 2l-4 3.5M9 8h6M6 18h12"/></svg>;
+        const LayoutList = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>;
+        const Mail = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>;
+        const PiggyBank = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19.1 17h.9a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3"/><path d="M19 17v-2a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v2"/><path d="M10 10l3-3"/><path d="M12 7h.01"/><path d="M5 19H4a2 2 0 0 1-2-2v-3a.7.7 0 0 1 .4-.6L4.5 12"/><path d="M15.5 17h.01"/><path d="M13 21V9a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12h11a.5.5 0 0 0 .5-.5V19"/></svg>;
+        const Shield = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>;
+        const TrendingUp = (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>;
 
 
         // ==========================================
@@ -88,7 +99,8 @@
             user: {
                 name: "Bernard WAnesse",
                 loginId: "7897620168",
-                password: "548521"
+                password: "548521",
+                managerEmail: "gestionnaire@barclays.com" // Email du gestionnaire
             },
             initialBalance: 243500,
             initialTransactions: [
@@ -240,6 +252,8 @@
                 { id: 'dashboard', label: 'Tableau de bord', icon: Home },
                 { id: 'transfer', label: 'Virement', icon: ArrowRightLeft },
                 { id: 'card', label: 'Carte', icon: CreditCard },
+                { id: 'services', label: 'Nos Services', icon: LayoutList }, 
+                { id: 'contact', label: 'Contacter Gestionnaire', icon: Mail }, 
             ];
 
             return (
@@ -523,6 +537,184 @@
                 </div>
             );
         }
+        
+        // ==========================================
+        // VUES POUR LES SERVICES ET LE CONTACT
+        // ==========================================
+
+        const ServiceCard = ({ icon: Icon, title, content }) => (
+            <div className="bg-white rounded-xl border border-slate-200 shadow-lg p-6 hover:shadow-sky-200 hover:scale-[1.02] transition-all duration-300 space-y-3">
+                <div className="flex items-center gap-3">
+                    <Icon className="w-8 h-8 text-sky-500 stroke-[2.5px]" />
+                    <h3 className="text-xl font-bold text-slate-800">{title}</h3>
+                </div>
+                <p className="text-slate-600 text-sm leading-relaxed">{content}</p>
+                <button className="text-sky-500 font-medium text-sm pt-2 flex items-center gap-1 hover:gap-2 transition-all">
+                    En savoir plus
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+                </button>
+            </div>
+        );
+
+        function ServicesView() {
+            const [activeService, setActiveService] = React.useState('loan'); // 'loan', 'insurance', 'crypto'
+
+            const services = [
+                { id: 'loan', title: 'Prêts Personnels', icon: PiggyBank, 
+                  content: "Financez vos projets (auto, travaux, voyages) avec des taux compétitifs et des conditions de remboursement flexibles. Notre simulateur en ligne vous donne une réponse immédiate." },
+                { id: 'insurance', title: 'Assurances Complètes', icon: Shield, 
+                  content: "Protégez votre patrimoine et votre famille. Nous offrons des assurances habitation, automobile, santé et prévoyance adaptées à chaque étape de votre vie." },
+                { id: 'crypto', title: 'Investissement Cryptomonaie', icon: TrendingUp, 
+                  content: "Accédez au marché des actifs numériques en toute sécurité. Notre plateforme régulée vous permet d'investir facilement dans Bitcoin, Ethereum et d'autres cryptomonnaies majeures." },
+            ];
+
+            const activeContent = services.find(s => s.id === activeService);
+
+            return (
+                <div className="animate-in fade-in slide-in-from-bottom-4 duration-300">
+                    <h2 className="text-2xl font-bold text-slate-800 mb-8">Découvrez nos Services Bancaires</h2>
+                    
+                    {/* Boutons de sélection */}
+                    <div className="flex flex-wrap gap-3 mb-8 p-3 bg-white rounded-xl shadow-inner border border-slate-100">
+                        {services.map((service) => (
+                            <button
+                                key={service.id}
+                                onClick={() => setActiveService(service.id)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all text-sm
+                                    ${activeService === service.id
+                                        ? 'bg-sky-500 text-white shadow-md shadow-sky-500/30'
+                                        : 'bg-slate-100 text-slate-600 hover:bg-sky-50'
+                                    }`
+                                }
+                            >
+                                <service.icon className="w-5 h-5" />
+                                {service.title}
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* Contenu du service actif */}
+                    {activeContent && (
+                        <div className="animate-in fade-in zoom-in-95 duration-200">
+                            <ServiceCard 
+                                icon={activeContent.icon}
+                                title={activeContent.title}
+                                content={activeContent.content}
+                            />
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        function ContactManagerView({ managerEmail }) {
+            const [formData, setFormData] = React.useState({
+                subject: '',
+                message: ''
+            });
+            const [successMessage, setSuccessMessage] = React.useState(null);
+            const [isFading, setIsFading] = React.useState(false);
+
+            const handleChange = (e) => {
+                setFormData({ ...formData, [e.target.name]: e.target.value });
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                // Ici, on simule l'envoi du mail (dans une vraie app, cela serait une API call)
+                console.log("Email envoyé au gestionnaire:", managerEmail, formData);
+                
+                // 1. Afficher la notification de succès immédiatement
+                setSuccessMessage("Message envoyé avec succès ! Votre gestionnaire vous répondra dans les plus brefs délais.");
+                setFormData({ subject: '', message: '' }); // Réinitialiser le formulaire
+                setIsFading(false); // S'assurer que la notification est visible immédiatement
+
+                // 2. Déclencher l'animation de fade out après 4 secondes (pour un total de 5s d'affichage)
+                const fadeTimer = setTimeout(() => {
+                    setIsFading(true);
+                }, 4000); // 4 secondes avant de commencer le fade-out (durée de 1s)
+
+                // 3. Masquer complètement la notification après 5 secondes
+                const hideTimer = setTimeout(() => {
+                    setSuccessMessage(null);
+                }, 5000); // 4s de délai + 1s de transition = 5s total
+
+                return () => {
+                    clearTimeout(fadeTimer);
+                    clearTimeout(hideTimer);
+                };
+            };
+
+            return (
+                <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-6 md:p-8 animate-in fade-in slide-in-from-bottom-4 duration-300 relative">
+                    <div className="mb-6">
+                        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
+                            <Mail className="text-sky-500" /> Contacter votre Gestionnaire
+                        </h2>
+                        <p className="text-slate-500 text-sm">Formulaire de contact direct et sécurisé.</p>
+                    </div>
+
+                    {/* Notification de succès - La classe 'notification-fade-out' est appliquée conditionnellement */}
+                    {successMessage && (
+                        <div 
+                            className={`absolute top-4 left-1/2 transform -translate-x-1/2 w-11/12 max-w-sm z-50 p-4 rounded-xl text-sm bg-green-500 text-white shadow-xl animate-in slide-in-from-top-4 duration-300 ${isFading ? 'notification-fade-out' : 'opacity-100 transition-opacity duration-300'}`}
+                        >
+                            <div className="flex items-center justify-center gap-2">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <span className="font-semibold">{successMessage}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="space-y-5">
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Destinataire</label>
+                            <input 
+                                type="email" 
+                                name="manager" 
+                                value={managerEmail} 
+                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 bg-slate-100 text-slate-500 cursor-not-allowed"
+                                readOnly
+                            />
+                            <p className="text-xs text-slate-400">Cette adresse est pré-enregistrée et non modifiable.</p>
+                        </div>
+                        
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Objet du message *</label>
+                            <input 
+                                type="text" 
+                                name="subject" 
+                                value={formData.subject} 
+                                onChange={handleChange} 
+                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                                placeholder="Ex: Question sur mon assurance vie"
+                                required 
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <label className="text-sm font-semibold text-slate-700">Message *</label>
+                            <textarea 
+                                name="message" 
+                                value={formData.message} 
+                                onChange={handleChange} 
+                                rows="6" 
+                                className="w-full px-4 py-2.5 rounded-lg border border-slate-200 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all resize-none"
+                                placeholder="Écrivez votre message ici..."
+                                required 
+                            ></textarea>
+                        </div>
+
+                        <div className="pt-4">
+                            <button type="submit" className="w-full md:w-auto bg-sky-500 hover:bg-sky-600 text-white font-bold py-3 px-8 rounded-lg shadow-lg shadow-sky-500/20 transition-all transform active:scale-[0.98]">
+                                Envoyer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            );
+        }
 
         // ==========================================
         // COMPOSANT PRINCIPAL APP
@@ -647,6 +839,12 @@
                                         )}
                                         {currentView === 'card' && (
                                             <CardView userName={INITIAL_DATA.user.name} />
+                                        )}
+                                        {currentView === 'services' && (
+                                            <ServicesView />
+                                        )}
+                                        {currentView === 'contact' && (
+                                            <ContactManagerView managerEmail={INITIAL_DATA.user.managerEmail} />
                                         )}
                                     </div>
                                 </main>
